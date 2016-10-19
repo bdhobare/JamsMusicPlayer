@@ -55,6 +55,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.jams.music.player.PermissionsActivity;
 import com.jams.music.player.R;
 import com.jams.music.player.Helpers.TypefaceHelper;
 import com.jams.music.player.InAppBilling.IabHelper;
@@ -158,25 +159,29 @@ public class LauncherActivity extends FragmentActivity {
 		
 		//Launch the appropriate activity based on the "FIRST RUN" flag.
 		if (mApp.getSharedPreferences().getBoolean(Common.FIRST_RUN, true)==true) {
-			
-        	//Create the default Playlists directory if it doesn't exist.
-        	File playlistsDirectory = new File(Environment.getExternalStorageDirectory() + "/Playlists/");
-        	if (!playlistsDirectory.exists() || !playlistsDirectory.isDirectory()) {
-        		playlistsDirectory.mkdir();
-        	}
-			
+
 			//Disable equalizer for HTC devices by default.
 			if (mApp.getSharedPreferences().getBoolean(Common.FIRST_RUN, true)==true &&
-				Build.PRODUCT.contains("HTC")) {
+					Build.PRODUCT.contains("HTC")) {
 				mApp.getSharedPreferences().edit().putBoolean("EQUALIZER_ENABLED", false).commit();
 			}
-			
-        	//Send out a test broadcast to initialize the homescreen/lockscreen widgets.
-        	sendBroadcast(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
-			
-			Intent intent = new Intent(this, WelcomeActivity.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Intent intent = new Intent(this, PermissionsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }else {
+                //Create the default Playlists directory if it doesn't exist.
+                File playlistsDirectory = new File(Environment.getExternalStorageDirectory() + "/Playlists/");
+                if (!playlistsDirectory.exists() || !playlistsDirectory.isDirectory()) {
+                    playlistsDirectory.mkdir();
+                }
+                //Send out a test broadcast to initialize the homescreen/lockscreen widgets.
+                sendBroadcast(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+                startActivity(new Intent(getApplicationContext(),WelcomeActivity.class));
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+
 			
 		} else if (mApp.isBuildingLibrary()) {
 			buildingLibraryMainText = (TextView) findViewById(R.id.building_music_library_text);

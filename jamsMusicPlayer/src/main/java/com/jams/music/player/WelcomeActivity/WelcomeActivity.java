@@ -28,8 +28,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -43,6 +45,7 @@ import com.jams.music.player.AsyncTasks.AsyncSaveMusicFoldersTask;
 import com.jams.music.player.MiscFragments.BuildingLibraryProgressFragment;
 import com.jams.music.player.Services.BuildMusicLibraryService;
 import com.jams.music.player.Utils.Common;
+import com.nostra13.universalimageloader.utils.L;
 import com.viewpagerindicator.LinePageIndicator;
 
 public class WelcomeActivity extends FragmentActivity {
@@ -55,7 +58,6 @@ public class WelcomeActivity extends FragmentActivity {
 	
 	private MusicFoldersFragment mMusicFoldersFragment;
 	public static BuildingLibraryProgressFragment mBuildingLibraryProgressFragment;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,12 +71,12 @@ public class WelcomeActivity extends FragmentActivity {
 		if (getActionBar()!=null)
 			getActionBar().hide();
 
-		welcomeViewPager = (ViewPager) findViewById(R.id.welcome_pager);	
-		
+		welcomeViewPager = (ViewPager) findViewById(R.id.welcome_pager);
+
 		FragmentManager fm = getSupportFragmentManager();
 		welcomeViewPager.setAdapter(new WelcomePagerAdapter(fm));
 		welcomeViewPager.setOffscreenPageLimit(6);
-		
+
 		indicator = (LinePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(welcomeViewPager);
 		
@@ -90,7 +92,7 @@ public class WelcomeActivity extends FragmentActivity {
             showBuildingLibraryProgress();
 
 	}
-	
+
 	/**
 	 * Page scroll listener.
 	 */

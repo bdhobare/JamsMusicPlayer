@@ -220,6 +220,14 @@ public class Common extends Application {
     public static final int REPEAT_SONG = 2;
     public static final int A_B_REPEAT = 3;
 
+
+	//Permission constants
+    public static final int WAKE_LOCK=1;
+    public static final int MODIFY_AUDIO_SETTINGS=2;
+    public static final int WRITE_EXTERNAL_STORAGE=3;
+    public static final int GET_ACCOUNTS=4;
+    public static final int USE_CREDENTIALS=5;
+    public static final int ACCESS_NETWORK_STATE=6;
 	@Override
 	public void onCreate() {
 		super.onCreate();
